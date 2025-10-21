@@ -12,8 +12,7 @@ import com.example.btl.ui.navigation.BottomNavigationBar
 import com.example.btl.ui.theme.BTLTheme
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.btl.ui.navigation.Screen
-import androidx.compose.runtime.getValue
-import androidx.navigation.compose.currentBackStackEntryAsState
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

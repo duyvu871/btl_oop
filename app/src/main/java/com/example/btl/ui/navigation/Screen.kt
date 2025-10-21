@@ -13,7 +13,6 @@ sealed class Screen(val route: String, val label: String? = null, val icon: Imag
     object Login : Screen("login")
     object Register : Screen("register")
     object Onboarding : Screen("onboarding")
-    // Các màn hình không có trên bottom bar
     object Search : Screen("search")
     object Favorites : Screen("favorites")
     object Details : Screen("details/{id}") {
