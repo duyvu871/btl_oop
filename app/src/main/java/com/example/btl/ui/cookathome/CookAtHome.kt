@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Nautainha() {
-    val ingredients = listOf("Trứng", "Thịt", "Cà chua", "Khoai Tây","Tôm","Cá")
+    val ingredients = listOf("Trứng", "Thịt", "Gà", "Khoai Tây","Tôm","Cá")
     val selected = remember { mutableStateMapOf<String, Boolean>().apply { ingredients.forEach { put(it, false) } } }
     Column(modifier = Modifier.padding(12.dp)) {
         Text("Chọn nguyên liệu bạn có")

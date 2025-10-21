@@ -92,7 +92,7 @@ fun RecipeDetailsContent(recipe: Recipe) {
         Text(recipe.title, style = MaterialTheme.typography.headlineMedium)
 
         Button(
-            onClick = {/*  TODO: save favorite via API */ },
+            onClick = {},
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Lưu vào danh sách yêu thích")
