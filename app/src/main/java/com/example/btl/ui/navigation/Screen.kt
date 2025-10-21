@@ -9,9 +9,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 sealed class Screen(val route: String, val label: String? = null, val icon: ImageVector? = null) {
     object Home : Screen("home", "Home", Icons.Default.Home)
     object CookAtHome : Screen("cook_at_home", "Nấu tại nhà", Icons.Default.Kitchen)
-    object Profile : Screen("profile", "Cá nhân", Icons.Default.Person)
+    object Profile : Screen("profile", "Profile", Icons.Default.Person)
+    object Login : Screen("login")
+    object Register : Screen("register")
     object Onboarding : Screen("onboarding")
-
+    // Các màn hình không có trên bottom bar
     object Search : Screen("search")
     object Favorites : Screen("favorites")
     object Details : Screen("details/{id}") {

@@ -1,12 +1,10 @@
-package com.example.btl.Network
+package com.example.btl.network
 
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.concurrent.atomic.AtomicReference
 
-class AuthInterceptor(
-    private val tokenProvider: TokenProvider
-) : Interceptor {
+class AuthInterceptor(private val tokenProvider: TokenProvider) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val token = tokenProvider.getAccessToken()
@@ -35,12 +33,12 @@ interface TokenProvider {
     fun refreshToken(): Boolean
 }
 
-class InMemoryTokenProvider : TokenProvider {
+class Token : TokenProvider {
     private val access = AtomicReference<String?>("")
     private val refresh = AtomicReference<String?>("")
     override fun getAccessToken(): String? = access.get()
     override fun refreshToken(): Boolean {
-        access.set("fake-access-token-refreshed")
+        access.set(" ")
         return true
     }
 }

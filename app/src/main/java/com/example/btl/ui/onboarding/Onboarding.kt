@@ -8,7 +8,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 
 
-
 @Composable
 fun Onboarding(onDone: () -> Unit) {
     var allergies by remember { mutableStateOf("") }

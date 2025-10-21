@@ -55,7 +55,7 @@ fun CongthucScreen(
                 }
                 is CongthucUiState.Error -> {
                     Text(
-                        text = state.message,
+                        text = state.mess,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }

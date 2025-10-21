@@ -1,6 +1,6 @@
 package com.example.btl.di
 
-import com.example.btl.repository.FakeRepository
+import com.example.btl.repository.Fake
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFakeRepository(): FakeRepository {
-        return FakeRepository()
+    fun provideFakeRepository(): Fake{
+        return Fake()
     }
 }

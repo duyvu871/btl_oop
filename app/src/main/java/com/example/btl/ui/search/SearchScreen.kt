@@ -14,8 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.btl.domain.model.Recipe
-import com.example.btl.ui.theme.BTLTheme
 
 @Composable
 fun SearchScreen(
@@ -71,8 +69,8 @@ fun SearchScreenContent(
             Box(modifier = Modifier.fillMaxSize()) {
                 if (uiState.isLoading) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else if (uiState.errorMessage != null) {
-                    Text(uiState.errorMessage, modifier = Modifier.align(Alignment.Center))
+                } else if (uiState.errormess != null) {
+                    Text(uiState.errormess, modifier = Modifier.align(Alignment.Center))
                 } else {
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(items = uiState.results, key = { it.id }) { recipe ->

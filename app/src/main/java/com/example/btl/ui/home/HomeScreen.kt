@@ -24,11 +24,10 @@ fun HomeScreen(onRecipeClick: (String) -> Unit, onSearchClick: () -> Unit, vm: H
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            when (val state = uiState) {
+            when(val state = uiState) {
                 is HomeUiState.Loading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-
                 is HomeUiState.Success -> {
                     HomeScreenContent(
                         recipes = state.recipes,
@@ -69,6 +68,5 @@ fun HomeScreenContent(
         items(items = recipes, key = { it.id }) { recipe ->
             RecipeCard(recipe = recipe, onClick = { onRecipeClick(recipe.id) })
         }
-
     }
 }
