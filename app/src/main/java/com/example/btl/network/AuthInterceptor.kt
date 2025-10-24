@@ -32,7 +32,6 @@ interface TokenProvider {
     fun getAccessToken(): String?
     fun refreshToken(): Boolean
 }
-
 class Token : TokenProvider {
     private val access = AtomicReference<String?>("")
     private val refresh = AtomicReference<String?>("")

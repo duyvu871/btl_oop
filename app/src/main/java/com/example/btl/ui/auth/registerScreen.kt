@@ -14,18 +14,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun RegisterScreen(
-    onRegisterSuccess: () -> Unit,
+    onRegisterSuccess: (email: String) -> Unit,
     onNavigateToLogin: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
-    var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.successmess) {
         if (uiState.successmess != null) {
-            onRegisterSuccess()
+            onRegisterSuccess(email)
         }
     }
 
@@ -41,21 +40,35 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text("Tạo tài khoản", style = MaterialTheme.typography.headlineMedium)
-
-            OutlinedTextField(value = username, onValueChange = { username = it }, label = { Text("Tên tài khoản") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = password, onValueChange = { password = it }, label = { Text("Mật khẩu") }, visualTransformation = PasswordVisualTransformation(), modifier = Modifier.fillMaxWidth())
-
-            Button(onClick = { viewModel.register(username, email, password) }, enabled = !uiState.isLoading, modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Mật khẩu") },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth()
+            )
+            Button(
+                onClick = { viewModel.register(email, password) },
+                enabled = !uiState.isLoading,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Đăng ký")
             }
-
             uiState.errormess?.let {
-                Text(text = it, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(top = 8.dp))
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
             }
-
             Row(modifier = Modifier.padding(top = 16.dp)) {
-                Text("Bạn đã có tài khoản?")
+                Text("Bạn đã có tài khoản? ")
                 Text(
                     text = "Đăng nhập",
                     modifier = Modifier.clickable { onNavigateToLogin() },

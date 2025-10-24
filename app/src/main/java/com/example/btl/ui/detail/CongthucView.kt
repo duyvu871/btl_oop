@@ -3,7 +3,8 @@ package com.example.btl.ui.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.btl.repository.Fake
+import com.example.btl.data.local.TokenManager
+import com.example.btl.data.remote.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,26 +13,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CongthucView @Inject constructor(
-    private val repo: Fake,
+    private val apiService: ApiService,
+    private val tokenManager: TokenManager,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
     private val recipeId: String = savedStateHandle.get<String>("id")!!
     private val UiState = MutableStateFlow<CongthucUiState>(CongthucUiState.Loading)
     val uiState: StateFlow<CongthucUiState> = UiState
     init {
-        loadRecipeDetails()
+        UiState.value = CongthucUiState.Error("")
     }
     private fun loadRecipeDetails() {
-        viewModelScope.launch {
-            UiState.value = CongthucUiState.Loading
-            val result = repo.getRecipeById(recipeId)
-            if (result != null) {
-                UiState.value = CongthucUiState.Success(result)
-            }
-            else {
-                UiState.value = CongthucUiState.Error("Không tìm thấy công thức.")
-            }
-        }
     }
 }

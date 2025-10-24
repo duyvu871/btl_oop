@@ -20,6 +20,7 @@ class AuthViewModel @Inject constructor(private val authRe: AuthRepository) : Vi
     private val UiState = MutableStateFlow(AuthUiState())
     val uiState = UiState.asStateFlow()
 
+
     fun login(email: String, pass: String) {
         viewModelScope.launch {
             UiState.value = AuthUiState(isLoading = true)
@@ -31,19 +32,18 @@ class AuthViewModel @Inject constructor(private val authRe: AuthRepository) : Vi
             }
         }
     }
-
-    fun register(username: String, email: String, pass: String) {
+    fun register(email: String, pass: String) {
         viewModelScope.launch {
             UiState.value = AuthUiState(isLoading = true)
             try {
-                authRe.registerUser(username, email, pass)
+
+                authRe.registerUser(email, pass)
                 UiState.value = AuthUiState(successmess = "Đăng ký thành công")
             } catch (e: Exception) {
                 UiState.value = AuthUiState(errormess = e.message)
             }
         }
     }
-
     fun resetState() {
         UiState.value = AuthUiState()
     }

@@ -5,13 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.btl.ui.navigation.AppNavHost
 import com.example.btl.ui.navigation.BottomNavigationBar
+import com.example.btl.ui.navigation.Screen
 import com.example.btl.ui.theme.BTLTheme
 import dagger.hilt.android.AndroidEntryPoint
-import com.example.btl.ui.navigation.Screen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -20,9 +22,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             BTLTheme {
                 val navController = rememberNavController()
-
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
                 Scaffold(
-                    bottomBar = { BottomNavigationBar(navController = navController) }
+                    bottomBar = {
+                        when (currentRoute) {
+                            Screen.Login.route,
+                            Screen.Register.route,
+                            Screen.Onboarding.route -> {  }
+                            else -> {
+                                BottomNavigationBar(navController = navController)
+                            }
+                        }
+                    }
                 ) { innerPadding ->
                     AppNavHost(
                         navController = navController,
