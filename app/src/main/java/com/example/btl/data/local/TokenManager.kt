@@ -16,21 +16,26 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
+
     fun saveAccessToken(accessToken: String) {
         prefs.edit().apply {
             putString("access_token", accessToken)
             apply()
         }
     }
+
     fun getAccessToken(): String? = prefs.getString("access_token", null)
-    fun saveRefreshToken(refreshToken: String) {
+    fun saveRefreshToken(refreshToken: String?) {
         prefs.edit().apply {
-            putString("refresh_token", refreshToken)
+            if (refreshToken != null) {
+                putString("refresh_token", refreshToken)
+            } else {
+                remove("refresh_token")
+            }
             apply()
         }
     }
 
-    fun getRefreshToken(): String? = prefs.getString("refresh_token", null)
     fun clearTokens() {
         prefs.edit().clear().apply()
     }

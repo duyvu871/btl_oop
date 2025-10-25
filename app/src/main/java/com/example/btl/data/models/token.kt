@@ -9,7 +9,7 @@ data class Token(
     @SerializedName("token_type")
     val tokenType: String,
     @SerializedName("refresh_token")
-    val refreshToken: String,
+    val refreshToken: String?,
     @SerializedName("user")
-    val user: UserRead
+    val user: UserRead?
 )
