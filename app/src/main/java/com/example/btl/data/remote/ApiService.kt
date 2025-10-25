@@ -14,17 +14,14 @@ interface ApiService {
     suspend fun register(
         @Body request: UserCreate
     ): UserRead
-
     @POST("/api/v1/auth/verify-email")
     suspend fun verifyEmail(
         @Body request: VerifyEmailRequest
-    ): Response<Unit>
-
+    ): EmailResponse
     @GET("/api/v1/auth/me")
     suspend fun getMe(
         @Header("Authorization") token: String
     ): UserRead
-
     @GET("recommendations")
     suspend fun getRecommendations(
         @Header("Authorization") token: String,
@@ -36,7 +33,6 @@ interface ApiService {
         @Query("mood") mood: String?,
         @Query("ingredients") ingredients: List<String>?
     ): PaginatedResponse<Recipe>
-
     @GET("dishes/search")
     suspend fun searchDishes(
         @Header("Authorization") token: String,
