@@ -40,6 +40,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
+                errorMessage = null
                 viewModel.login(username, password, onSuccess = onLoginSuccess, onError = { msg -> errorMessage = msg })
             },
             modifier = Modifier.fillMaxWidth()

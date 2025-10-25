@@ -23,6 +23,14 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
         }
     }
     fun getAccessToken(): String? = prefs.getString("access_token", null)
+    fun saveRefreshToken(refreshToken: String) {
+        prefs.edit().apply {
+            putString("refresh_token", refreshToken)
+            apply()
+        }
+    }
+
+    fun getRefreshToken(): String? = prefs.getString("refresh_token", null)
     fun clearTokens() {
         prefs.edit().clear().apply()
     }

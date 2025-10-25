@@ -30,6 +30,7 @@ class AuthRepository @Inject constructor(
             val request = LoginRequest(email = email, password = pass)
             val response = apiService.login(request)
             tokenManager.saveAccessToken(response.accessToken)
+            tokenManager.saveRefreshToken(response.refreshToken)
         } catch (e: Exception) {
             throw Exception("Đăng nhập thất bại: ${parseErrorMessage(e)}")
         }
@@ -39,7 +40,6 @@ class AuthRepository @Inject constructor(
             val request = UserCreate(email = email, password = pass)
             apiService.register(request)
         } catch (e: Exception) {
-
             throw Exception("Đăng ký thất bại: ${parseErrorMessage(e)}")
         }
     }
@@ -48,28 +48,27 @@ class AuthRepository @Inject constructor(
         return when (e) {
             is HttpException -> {
                 try {
-                    val errorBody = e.response()?.errorBody()?.string() ?: "lỗi"
+                    val errorBody = e.response()?.errorBody()?.string() ?: "Không có nội dung lỗi"
                     try {
                         val errorResponse = gson.fromJson(errorBody, ErrorResponse::class.java)
-
                         if (errorResponse.detail is List<*>) {
                             val detailList = gson.fromJson<List<ErrorDetail>>(
                                 gson.toJson(errorResponse.detail),
                                 object : TypeToken<List<ErrorDetail>>() {}.type
                             )
-                            detailList.firstOrNull()?.msg ?: "Lỗi từ máy chủ."
+                            detailList.firstOrNull()?.msg ?: "Lỗi từ máy chủ"
                         }
                         else if (errorResponse.detail is String) {
                             errorResponse.detail.toString()
                         }
                         else {
-                            "  "
+                            "Không thể phân tích phản hồi lỗi"
                         }
                     } catch (jsonError: Exception) {
                         if (errorBody.length < 100) errorBody else "Lỗi ${e.code()}: ${e.message()}"
                     }
                 } catch (io: IOException) {
-                    "Lỗi khi đọc phản hồi: ${e.message()}"
+                    "Lỗi đọc phản hồi ${e.message()}"
                 }
             }
             is IOException -> {
