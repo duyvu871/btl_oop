@@ -16,14 +16,12 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
-
     fun saveAccessToken(accessToken: String) {
         prefs.edit().apply {
             putString("access_token", accessToken)
             apply()
         }
     }
-
     fun getAccessToken(): String? = prefs.getString("access_token", null)
     fun saveRefreshToken(refreshToken: String?) {
         prefs.edit().apply {
@@ -35,7 +33,6 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
             apply()
         }
     }
-
     fun clearTokens() {
         prefs.edit().clear().apply()
     }

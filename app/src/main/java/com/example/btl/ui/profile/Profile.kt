@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 
 @Composable
 fun Profile(
-    onFavoritesClick: () -> Unit,
     onLogoutClick: () -> Unit
 ) {
     Box(
@@ -17,16 +16,6 @@ fun Profile(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Column(
-            modifier = Modifier.align(Alignment.Center)
-        ) {
-            Button(
-                onClick = onFavoritesClick,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Danh sách yêu thích")
-            }
-        }
         Button(
             onClick = onLogoutClick,
             modifier = Modifier

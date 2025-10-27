@@ -48,7 +48,7 @@ class AuthRepository @Inject constructor(
         return when (e) {
             is HttpException -> {
                 try {
-                    val errorBody = e.response()?.errorBody()?.string() ?: "Không có nội dung lỗi"
+                    val errorBody = e.response()?.errorBody()?.string() ?: "lỗi"
                     try {
                         val errorResponse = gson.fromJson(errorBody, ErrorResponse::class.java)
                         if (errorResponse.detail is List<*>) {
@@ -62,7 +62,7 @@ class AuthRepository @Inject constructor(
                             errorResponse.detail.toString()
                         }
                         else {
-                            "Không thể phân tích phản hồi lỗi"
+                            "lỗi"
                         }
                     } catch (jsonError: Exception) {
                         if (errorBody.length < 100) errorBody else "Lỗi ${e.code()}: ${e.message()}"

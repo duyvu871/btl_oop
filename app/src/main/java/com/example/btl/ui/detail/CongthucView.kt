@@ -18,11 +18,26 @@ class CongthucView @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val recipeId: String = savedStateHandle.get<String>("id")!!
-    private val UiState = MutableStateFlow<CongthucUiState>(CongthucUiState.Loading)
-    val uiState: StateFlow<CongthucUiState> = UiState
+    private val _uiState = MutableStateFlow<CongthucUiState>(CongthucUiState.Loading)
+    val uiState: StateFlow<CongthucUiState> = _uiState
+
     init {
-        UiState.value = CongthucUiState.Error("")
+        loadRecipeDetails()
     }
     private fun loadRecipeDetails() {
+        viewModelScope.launch {
+            _uiState.value = CongthucUiState.Loading
+            try {
+                val token = "Bearer ${tokenManager.getAccessToken() ?: ""}"
+                val recipeData = apiService.getRecipeById(token, recipeId)
+                if (recipeData != null) {
+                    _uiState.value = CongthucUiState.Success(recipeData)
+                } else {
+                    _uiState.value = CongthucUiState.Error("Không tìm thấy công thức")
+                }
+            } catch (e: Exception) {
+                _uiState.value = CongthucUiState.Error("Lỗi: ${e.message}")
+            }
+        }
     }
 }

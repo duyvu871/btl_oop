@@ -51,7 +51,7 @@ fun SearchScreenContent(
                 title = { Text("Tìm kiếm món ăn") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateUp) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Quay lai")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Quay lại")
                     }
                 }
             )
@@ -68,7 +68,7 @@ fun SearchScreenContent(
                 value = query,
                 onValueChange = onQueryChange,
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Tìm kiem") },
+                placeholder = { Text("Tìm kiếm") },
                 singleLine = true
             )
 

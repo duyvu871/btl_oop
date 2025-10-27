@@ -29,7 +29,8 @@ class MainActivity : ComponentActivity() {
                         when (currentRoute) {
                             Screen.Login.route,
                             Screen.Register.route,
-                            Screen.Onboarding.route -> {  }
+                            Screen.Onboarding.route,
+                            Screen.VerifyEmail.route -> {  }
                             else -> {
                                 BottomNavigationBar(navController = navController)
                             }

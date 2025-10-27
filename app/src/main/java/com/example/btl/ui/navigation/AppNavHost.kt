@@ -11,9 +11,7 @@ import androidx.navigation.navArgument
 import com.example.btl.ui.auth.LoginScreen
 import com.example.btl.ui.auth.RegisterScreen
 import com.example.btl.ui.auth.VerifyEmailScreen
-import com.example.btl.ui.cookathome.Nautainha
 import com.example.btl.ui.detail.CongthucScreen
-import com.example.btl.ui.favorite.Favorite
 import com.example.btl.ui.home.HomeScreen
 import com.example.btl.ui.onboarding.Onboarding
 import com.example.btl.ui.profile.Profile
@@ -43,7 +41,6 @@ fun AppNavHost(
             )
         }
 
-
         composable(Screen.Register.route) {
             RegisterScreen(
                 onRegisterSuccess = { email ->
@@ -57,16 +54,13 @@ fun AppNavHost(
             )
         }
 
-
         composable(
             route = Screen.VerifyEmail.route,
             arguments = listOf(navArgument("email") { type = NavType.StringType })
         ) {
             VerifyEmailScreen(
                 onVerifySuccess = {
-
                     navController.navigate(Screen.Login.route) {
-
                         popUpTo(navController.graph.findStartDestination().id) {
                             inclusive = true
                         }
@@ -75,23 +69,25 @@ fun AppNavHost(
             )
         }
 
-
-
-
         composable(Screen.Onboarding.route) {
             Onboarding(
                 onDone = { query ->
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(navController.graph.id) {
+                    navController.navigate(Screen.Home.createRoute(query)) {
+                        popUpTo(Screen.Onboarding.route) {
                             inclusive = true
                         }
                     }
-                    navController.navigate(Screen.Search.createRoute(query))
                 }
             )
         }
 
-        composable(Screen.Home.route) {
+        composable(
+            route = Screen.Home.route,
+            arguments = listOf(navArgument("q") {
+                type = NavType.StringType
+                defaultValue = ""
+            })
+        ) {
             HomeScreen(
                 onRecipeClick = { recipeId ->
                     navController.navigate(Screen.Details.createRoute(recipeId))
@@ -126,12 +122,9 @@ fun AppNavHost(
                 }
             )
         }
-        composable(Screen.CookAtHome.route) { Nautainha() }
+
         composable(Screen.Profile.route) {
             Profile(
-                onFavoritesClick = {
-                    navController.navigate(Screen.Favorites.route)
-                },
                 onLogoutClick = {
                     navController.navigate(Screen.Login.route) {
                         popUpTo(navController.graph.id) {
@@ -141,6 +134,5 @@ fun AppNavHost(
                 }
             )
         }
-        composable(Screen.Favorites.route) { Favorite() }
     }
 }

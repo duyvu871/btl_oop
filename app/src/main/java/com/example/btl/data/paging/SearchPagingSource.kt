@@ -20,6 +20,7 @@ class SearchPagingSource(
         }
         val page = params.key ?: 1
         val token = "Bearer ${tokenManager.getAccessToken() ?: ""}"
+
         return try {
             val response = apiService.searchDishes(
                 token = token,
@@ -27,12 +28,17 @@ class SearchPagingSource(
                 page = page,
                 size = params.loadSize
             )
-            val recipes = response.results
-
+            val recipes = response.recipes
+            val totalLoaded = response.page * response.size
+            val nextKey = if (totalLoaded >= response.total) {
+                null
+            } else {
+                page + 1
+            }
             LoadResult.Page(
                 data = recipes,
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (page >= response.totalPages) null else page + 1
+                nextKey = nextKey
             )
         } catch (e: IOException) {
             LoadResult.Error(e)

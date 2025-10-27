@@ -1,4 +1,3 @@
-
 package com.example.btl.data.models
 
 import com.google.gson.annotations.SerializedName

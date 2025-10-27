@@ -20,6 +20,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.btl.R
 import com.example.btl.domain.model.Recipe
+import com.example.btl.domain.model.Nguyenlieu
+import com.example.btl.domain.model.TutorialStep
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,11 +93,40 @@ fun RecipeDetailsContent(recipe: Recipe) {
         )
         Text(recipe.title, style = MaterialTheme.typography.headlineMedium)
 
-        Button(
-            onClick = {},
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Lưu vào danh sách yêu thích")
+        recipe.ingredients?.let { ingredients ->
+            if (ingredients.isNotEmpty()) {
+                Spacer(Modifier.height(8.dp))
+                Text("Nguyên liệu:", style = MaterialTheme.typography.titleLarge)
+                Spacer(Modifier.height(4.dp))
+                Column {
+                    ingredients.forEach { ingredient ->
+                        Text(
+                            text = "• ${ingredient.name} (${ingredient.quantity} ${ingredient.unit})",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+            }
+        }
+
+        recipe.tutorialSteps?.let { steps ->
+            if (steps.isNotEmpty()) {
+                Spacer(Modifier.height(8.dp))
+                Text("Các bước thực hiện:", style = MaterialTheme.typography.titleLarge)
+                Spacer(Modifier.height(4.dp))
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    steps.sortedBy { it.index }.forEach { step ->
+                        Text(
+                            text = "${step.index}. ${step.title}",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            text = step.content,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+            }
         }
     }
 }
