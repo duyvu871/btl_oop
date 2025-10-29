@@ -17,6 +17,7 @@ import javax.inject.Inject
 data class HomeUiState(
     val isLoading: Boolean = false,
     val recommendations: List<Recipe> = emptyList(),
+    val recommendationMessage: String? = null,
     val errorMessage: String? = null
 )
 @HiltViewModel
@@ -25,6 +26,7 @@ class HomeViewModel @Inject constructor(
     private val tokenManager: TokenManager,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
@@ -41,21 +43,26 @@ class HomeViewModel @Inject constructor(
 
     fun fetchRecommendations(query: String) {
         if (query.isBlank()) {
-            _uiState.value = HomeUiState(recommendations = emptyList())
+            _uiState.value = HomeUiState(recommendations = emptyList(), recommendationMessage = null)
             return
         }
+
         viewModelScope.launch {
             _uiState.value = HomeUiState(isLoading = true)
-            try {
+            try{
                 val token = "Bearer ${tokenManager.getAccessToken() ?: ""}"
                 val request = RecommendRequest(query = query)
                 val response = apiService.recommendRecipes(token, request)
-                _uiState.value = HomeUiState(recommendations = response.recipes)
+
+                _uiState.value = HomeUiState(
+                    recommendations = response.recipes,
+                    recommendationMessage = if (response.recipes.isEmpty()) response.message else null
+                )
             } catch (e: Exception) {
                 val errorMsg = if (e is retrofit2.HttpException && e.code() == 422) {
-                    "Lỗi 422"
+                    "Lỗi 422: Yêu cầu không hợp lệ."
                 } else {
-                    e.message ?: "Lỗi"
+                    e.message ?: "Đã xảy ra lỗi"
                 }
                 _uiState.value = HomeUiState(errorMessage = errorMsg)
             }

@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
@@ -41,6 +42,9 @@ object NetworkModule {
             .addInterceptor(retryInterceptor)
             .addInterceptor(logging)
             .dns(ipv4OnlyDns)
+            .connectTimeout(45, TimeUnit.SECONDS)
+            .readTimeout(45, TimeUnit.SECONDS)
+            .writeTimeout(45, TimeUnit.SECONDS)
             .build()
     }
     @Provides

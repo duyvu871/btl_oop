@@ -31,7 +31,6 @@ fun HomeScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-
             item {
                 OutlinedTextField(
                     value = "",
@@ -65,11 +64,20 @@ fun HomeScreen(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = errorMsg)
+                        Text(text = errorMsg, color = MaterialTheme.colorScheme.error)
                     }
                 }
             }
-            if (!uiState.isLoading && uiState.errorMessage == null && uiState.recommendations.isEmpty()) {
+            uiState.recommendationMessage?.let { message ->
+                item {
+                    Text(
+                        text = message,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                }
+            }
+            if (!uiState.isLoading && uiState.errorMessage == null && uiState.recommendations.isEmpty() && uiState.recommendationMessage == null) {
                 item {
                     Box(
                         modifier = Modifier.fillMaxWidth(),
