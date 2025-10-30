@@ -68,30 +68,32 @@ fun HomeScreen(
                     }
                 }
             }
-            uiState.recommendationMessage?.let { message ->
-                item {
-                    Text(
-                        text = message,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                }
-            }
-            if (!uiState.isLoading && uiState.errorMessage == null && uiState.recommendations.isEmpty() && uiState.recommendationMessage == null) {
-                item {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "Không có gợi ý nào")
+            if (!uiState.isLoading && uiState.errorMessage == null) {
+                uiState.recommendationMessage?.let { message ->
+                    item {
+                        Text(
+                            text = message,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
                     }
                 }
-            }
-            items(uiState.recommendations) { recipe ->
-                RecipeCard(
-                    recipe = recipe,
-                    onClick = { onRecipeClick(recipe.id) }
-                )
+                items(uiState.recommendations) { recipe ->
+                    RecipeCard(
+                        recipe = recipe,
+                        onClick = { onRecipeClick(recipe.id) }
+                    )
+                }
+                if (uiState.recommendations.isEmpty() && uiState.recommendationMessage == null) {
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "Không có gợi ý nào.")
+                        }
+                    }
+                }
             }
         }
     }

@@ -49,14 +49,14 @@ class HomeViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.value = HomeUiState(isLoading = true)
-            try{
+            try {
                 val token = "Bearer ${tokenManager.getAccessToken() ?: ""}"
                 val request = RecommendRequest(query = query)
                 val response = apiService.recommendRecipes(token, request)
 
                 _uiState.value = HomeUiState(
                     recommendations = response.recipes,
-                    recommendationMessage = if (response.recipes.isEmpty()) response.message else null
+                    recommendationMessage = if (response.message.isNullOrBlank()) null else response.message
                 )
             } catch (e: Exception) {
                 val errorMsg = if (e is retrofit2.HttpException && e.code() == 422) {
